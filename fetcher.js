@@ -6,17 +6,31 @@ const request = require('request')
 const fs = require('fs')
 
 request(cliArg[0], (error, response, body) => {
-  console.log('error completing http request: ', error);
-  // console.log('headers: ', headers.size)
+  //console.log('error: ', error);
   //console.log('statusCode: ', response && response.statusCode);
   //console.log('body', body);
 
-  fs.writeFile(cliArg[1], body, (bytesWritten, err,) => {
-    if (err) throw err;
+  if (error) throw (`There was an error making the http request, ${error}`)
+  if (response.statusCode !== 200) console.log('We could not complete your download, your http request Status Code was: ', response && response.statusCode)
 
-    if (!err) console.log('File created successfully', bytesWritten);
+  if (!error && response.statusCode === 200) {
+    fs.writeFile(cliArg[1], body, (err,) => {
+      if (err) {
+        console.log(err);
+      } else {
 
-  })
+        fs.stat(cliArg[1], (err, fileStats) => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log(`Downloaded and saved ${fileStats.size} bytes to ${cliArg[1]} `)
+          }
+        })
+        //console.log('File created successfully',);
+      }
+    })
+  }
 
-  //if (error !== null) console.log('WOAH ERRORROROROR')
+
+
 });
