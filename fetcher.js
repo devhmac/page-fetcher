@@ -8,7 +8,7 @@ const fs = require('fs')
 request(cliArg[0], (error, response, body) => {
   //console.log('error: ', error);
   //console.log('statusCode: ', response && response.statusCode);
-  console.log('body length', body.length);
+  //console.log('body length', body.length); Body.length gives the same bytes number as fs.stat
 
   //if error with request, throw
   if (error) throw (`There was an error making the http request, ${error}`)
@@ -17,7 +17,7 @@ request(cliArg[0], (error, response, body) => {
   // if the request does not error, and our status code is 200 (good as set by parameters)
   if (!error && response.statusCode === 200) {
     //write body of request to file specified by cli arg, 
-    fs.writeFile(cliArg[1], body, (err,) => {
+    fs.writeFile(cliArg[1], body, (err,) => { // if i use body.length i dont need this at all
       if (err) {
         //if there is an error with writeFile log it
         console.log(err);
