@@ -8,7 +8,7 @@ const fs = require('fs')
 request(cliArg[0], (error, response, body) => {
   //console.log('error: ', error);
   //console.log('statusCode: ', response && response.statusCode);
-  //console.log('body', body);
+  console.log('body length', body.length);
 
   //if error with request, throw
   if (error) throw (`There was an error making the http request, ${error}`)
